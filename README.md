@@ -19,5 +19,5 @@ deploys it as a FastAPI service, and automates CI/CD pipelines using GitHub Acti
 5. Use the `/recommend` endpoint to get movie recommendations.
 
    
-https://ahamed338.github.io/movie-recommender-mlops/
-https://movie-recommender-mlops-tkyl.onrender.com
+#https://ahamed338.github.io/movie-recommender-mlops/
+#https://movie-recommender-mlops-tkyl.onrender.com
