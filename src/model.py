@@ -1,10 +1,11 @@
+import mlflow.pyfunc
 import pandas as pd
-from sklearn.decomposition import TruncatedSVD
 import numpy as np
+from sklearn.decomposition import TruncatedSVD
 
 class RecommenderModel:
     def __init__(self):
-        self.model = TruncatedSVD(n_components=20, random_state=42)
+        self.model = TruncatedSVD(n_components=2, random_state=42)
         self.user_factors = None
         self.movie_factors = None
         self.user_index = None
@@ -18,7 +19,6 @@ class RecommenderModel:
         self.model.fit(matrix)
         self.user_factors = self.model.transform(matrix)
         self.movie_factors = self.model.components_
-        print("Model trained.")
 
     def recommend(self, user_id, top_k=5):
         if user_id not in self.user_index:
@@ -29,3 +29,14 @@ class RecommenderModel:
         top_indices = np.argsort(scores)[::-1][:top_k]
         recommendations = [self.movie_index[i] for i in top_indices]
         return recommendations
+
+class MlflowRecommenderWrapper(mlflow.pyfunc.PythonModel):
+    def __init__(self, recommender):
+        self.recommender = recommender
+
+    def predict(self, context, model_input: pd.DataFrame) -> list:
+        if isinstance(model_input, pd.DataFrame):
+            user_ids = model_input.squeeze().values  # Convert DataFrame to array of user_ids
+        else:
+            user_ids = [model_input]
+        return [self.recommender.recommend(user_id) for user_id in user_ids]
