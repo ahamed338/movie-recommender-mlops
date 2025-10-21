@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommendation System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        input, button { padding: 10px; margin: 5px; }
+        #chat { border: 1px solid #ccc; padding: 20px; height: 400px; overflow-y: scroll; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Movie Recommendation Chatbot</h1>
+        <div id="chat"></div>
+        <input type="text" id="message" placeholder="Type 'Movie:Rating' or 'help'" style="width: 300px;">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const message = document.getElementById('message').value;
+            if (!message) return;
+            
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message, session_id: 'web' })
+            });
+            
+            const data = await response.json();
+            document.getElementById('chat').innerHTML += `<p><strong>You:</strong> ${message}</p>`;
+            document.getElementById('chat').innerHTML += `<p><strong>Bot:</strong> ${data.message}</p>`;
+            document.getElementById('message').value = '';
+        }
+        
+        // Allow Enter key to send message
+        document.getElementById('message').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') sendMessage();
+        });
+    </script>
+</body>
+</html>
