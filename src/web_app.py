@@ -7,7 +7,7 @@ from scipy.sparse import csr_matrix
 import re
 from difflib import get_close_matches
 import json
-from utils import load_combined_movies
+from .utils import load_combined_movies
 
 
 app = Flask(__name__)
@@ -95,7 +95,7 @@ class MovieRecommendationBot:
         self.model = mlflow.sklearn.load_model(self.model_uri)
         
     def load_data(self):
-        from utils import create_hybrid_ratings
+        from .utils import create_hybrid_ratings
         ratings = create_hybrid_ratings()
         
         self.user_item_matrix = ratings.pivot(
