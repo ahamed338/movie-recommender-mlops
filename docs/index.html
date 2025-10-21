@@ -173,6 +173,19 @@
             font-size: 0.9em;
             overflow-x: auto;
             margin: 15px 0;
+            line-height: 1.4;
+        }
+
+        .file-tree {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+            margin: 15px 0;
+            line-height: 1.3;
         }
 
         footer {
@@ -207,22 +220,23 @@
     <div class="container">
         <header>
             <h1>🎬 Movie Recommendation MLOps</h1>
-            <p class="subtitle">A machine learning pipeline for personalized movie recommendations</p>
+            <p class="subtitle">A complete MLOps pipeline for personalized movie recommendations</p>
             
             <div class="badges">
                 <span class="badge">Python</span>
                 <span class="badge">MLflow</span>
                 <span class="badge">Scikit-learn</span>
                 <span class="badge">Flask</span>
-                <span class="badge">Collaborative Filtering</span>
+                <span class="badge">Docker</span>
+                <span class="badge">KNN Algorithm</span>
             </div>
 
             <div class="cta-buttons">
-                <a href="https://github.com/YOUR_USERNAME/YOUR_REPO_NAME" class="btn" target="_blank">
+                <a href="https://github.com/ahamed338/movie-recommender-mlops" class="btn" target="_blank">
                     📁 View Code
                 </a>
                 <a href="https://github.com/ahamed338/movie-recommender-mlops#readme" class="btn btn-secondary" target="_blank">
-                    📚 Documentation
+                    📚 README
                 </a>
             </div>
         </header>
@@ -230,11 +244,12 @@
         <div class="card-grid">
             <div class="card">
                 <h2>🤖 Project Overview</h2>
-                <p>An end-to-end MLOps system that provides personalized movie recommendations using collaborative filtering and K-Nearest Neighbors algorithm.</p>
+                <p>An end-to-end MLOps system that provides personalized movie recommendations using collaborative filtering with K-Nearest Neighbors algorithm.</p>
                 <ul class="features">
                     <li>Train recommendation models with MLflow tracking</li>
-                    <li>Interactive prediction interface</li>
-                    <li>Web-based chatbot interface</li>
+                    <li>Interactive CLI and web interfaces</li>
+                    <li>Chatbot-style recommendation system</li>
+                    <li>Docker containerization support</li>
                     <li>Model versioning and experiment tracking</li>
                 </ul>
             </div>
@@ -242,11 +257,11 @@
             <div class="card">
                 <h2>⚙️ How It Works</h2>
                 <ul class="features">
-                    <li><strong>Data:</strong> MovieLens 100K dataset</li>
+                    <li><strong>Data:</strong> MovieLens 100K dataset (ml-100k/)</li>
                     <li><strong>Algorithm:</strong> KNN Collaborative Filtering</li>
                     <li><strong>Training:</strong> MLflow experiment tracking</li>
-                    <li><strong>Serving:</strong> Flask web interface</li>
-                    <li><strong>Deployment:</strong> GitHub Pages + Local hosting</li>
+                    <li><strong>Serving:</strong> Multiple interfaces (CLI, Web, Chatbot)</li>
+                    <li><strong>Deployment:</strong> Docker container ready</li>
                 </ul>
             </div>
 
@@ -258,19 +273,26 @@
                     <span class="tech-item">Scikit-learn</span>
                     <span class="tech-item">MLflow</span>
                     <span class="tech-item">Flask</span>
-                    <span class="tech-item">HTML/CSS/JS</span>
-                    <span class="tech-item">GitHub Pages</span>
+                    <span class="tech-item">Docker</span>
+                    <span class="tech-item">MovieLens 100K</span>
                 </div>
                 
                 <h3 style="margin-top: 20px;">📁 Project Structure</h3>
-                <div class="code-block">
-src/
-├── train.py          # Model training
-├── predict.py        # CLI predictions
-├── web_app.py        # Flask web interface
-└── chatbot.py        # Chatbot logic
-docs/
-└── index.html        # This documentation site
+                <div class="file-tree">
+.
+├── src/
+│   ├── train.py          # Model training script
+│   ├── predict.py        # CLI prediction interface
+│   ├── web_app.py        # Flask web application
+│   ├── chatbot.py        # Interactive chatbot
+│   ├── model.py          # Model utilities
+│   └── utils.py          # Helper functions
+├── ml-100k/              # MovieLens dataset
+├── mlflow/               # MLflow experiments & models
+├── data/                 # Additional data files
+├── docs/                 # Documentation (this site)
+├── Dockerfile            # Container configuration
+└── requirements.txt      # Python dependencies
                 </div>
             </div>
         </div>
@@ -283,11 +305,14 @@ docs/
                 <h3>🚀 Quick Start</h3>
                 <div class="code-block">
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-cd YOUR_REPO_NAME
+git clone https://github.com/ahamed338/movie-recommender-mlops.git
+cd movie-recommender-mlops
 
 # Install dependencies
 pip install -r requirements.txt
+
+# Train the model first
+python src/train.py
 
 # Run the web application
 python src/web_app.py
@@ -296,13 +321,12 @@ python src/web_app.py
             </div>
 
             <div class="local-demo">
-                <h3>🎬 Demo Features</h3>
+                <h3>🎬 Available Interfaces</h3>
                 <ul class="features">
-                    <li>Interactive movie rating system</li>
-                    <li>Personalized recommendations</li>
-                    <li>Chatbot-style interface</li>
-                    <li>Real-time predictions</li>
-                    <li>MLflow model tracking</li>
+                    <li><strong>CLI Interface:</strong> <code>python src/predict.py</code></li>
+                    <li><strong>Web Interface:</strong> <code>python src/web_app.py</code></li>
+                    <li><strong>Chatbot:</strong> <code>python src/chatbot.py</code></li>
+                    <li><strong>Simple Chatbot:</strong> <code>python src/simple_chatbot.py</code></li>
                 </ul>
             </div>
         </div>
@@ -314,18 +338,26 @@ python src/web_app.py
                 <div class="code-block">
 # Train the recommendation model
 python src/train.py
+
+# Output: Training complete ✅ | Model logged
+# Run ID: [unique-run-id]
                 </div>
 
                 <h3>CLI Predictions</h3>
                 <div class="code-block">
 # Get recommendations via command line
 python src/predict.py
+
+# Follow the prompts to rate movies
+# Example input: "Toy Story (1995):5, Jumanji (1995):4"
                 </div>
 
                 <h3>Web Interface</h3>
                 <div class="code-block">
-# Launch the web application
+# Launch the Flask web application
 python src/web_app.py
+
+# Access at: http://localhost:5000
                 </div>
             </div>
 
@@ -333,25 +365,41 @@ python src/web_app.py
                 <h2>📊 MLflow Tracking</h2>
                 <p>Monitor experiments and model performance locally:</p>
                 <div class="code-block">
-# View MLflow UI
+# View MLflow UI to track experiments
 mlflow ui --backend-store-uri file:./mlflow/mlruns
 
-# Open: http://localhost:5000
+# Open: http://localhost:5000 (MLflow UI)
                 </div>
                 
-                <p><strong>Tracked Metrics:</strong></p>
+                <p><strong>Tracked Information:</strong></p>
                 <ul class="features">
                     <li>Model parameters and configurations</li>
                     <li>Training artifacts and metrics</li>
                     <li>Experiment comparisons</li>
                     <li>Model version history</li>
+                    <li>Automatic model registry</li>
                 </ul>
             </div>
         </div>
 
         <div class="demo-section">
-            <h2>🔧 Development</h2>
+            <h2>🐳 Docker Support</h2>
             <div class="local-demo">
+                <h3>Containerized Deployment</h3>
+                <div class="code-block">
+# Build the Docker image
+docker build -t movie-recommender .
+
+# Run the container
+docker run -p 5000:5000 movie-recommender
+                </div>
+                <p>The application will be available at <strong>http://localhost:5000</strong> inside the container.</p>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <h2>🔧 Development</h2>
                 <h3>Project Setup</h3>
                 <div class="code-block">
 # Create virtual environment
@@ -361,17 +409,40 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 # Install dependencies
 pip install -r requirements.txt
 
-# Download MovieLens dataset (if not included)
-# Place in ml-100k/ folder
+# The MovieLens 100K dataset is already included in ml-100k/
                 </div>
+
+                <h3>Key Features</h3>
+                <ul class="features">
+                    <li>Fuzzy movie title matching</li>
+                    <li>Interactive rating system</li>
+                    <li>Personalized recommendations</li>
+                    <li>Multiple user interfaces</li>
+                    <li>Experiment tracking with MLflow</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>📈 Model Details</h2>
+                <p><strong>Algorithm:</strong> K-Nearest Neighbors Collaborative Filtering</p>
+                <p><strong>Similarity Metric:</strong> Cosine Similarity</p>
+                <p><strong>Dataset:</strong> MovieLens 100K (943 users, 1682 movies)</p>
+                
+                <h3 style="margin-top: 20px;">🎯 Recommendation Logic</h3>
+                <ul class="features">
+                    <li>Finds users with similar movie preferences</li>
+                    <li>Aggregates ratings from nearest neighbors</li>
+                    <li>Recommends unseen movies with highest predicted ratings</li>
+                    <li>Handles new users with cold-start strategy</li>
+                </ul>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>Made with ❤️ for the MLOps community</p>
+        <p>Made with ❤️ for the MLOps community | Ahamed's Movie Recommendation System</p>
         <p>
-            <a href="https://github.com/YOUR_USERNAME/YOUR_REPO_NAME" style="color: white; text-decoration: underline;" target="_blank">
+            <a href="https://github.com/ahamed338/movie-recommender-mlops" style="color: white; text-decoration: underline;" target="_blank">
                 View on GitHub
             </a>
         </p>
