@@ -7,6 +7,8 @@ from scipy.sparse import csr_matrix
 import re
 from difflib import get_close_matches
 import json
+from utils import load_combined_movies
+
 
 app = Flask(__name__)
 
@@ -14,32 +16,16 @@ app = Flask(__name__)
 # MLflow setup
 # -----------------------------
 mlflow.set_tracking_uri("file:./mlflow/mlruns")
-EXPERIMENT_NAME = "movie-recommender"
+EXPERIMENT_NAME = "hybrid-movie-recommender"  # Updated to match train.py
 
 # -----------------------------
-# Load movie titles
+# Load COMBINED movies (English + Hindi) - REPLACED!
 # -----------------------------
-def load_movies():
-    movies = pd.read_csv(
-        "ml-100k/u.item",
-        sep="|",
-        names=[
-            "movieId", "title", "release_date", "video_release_date", "IMDb_URL",
-            "unknown", "Action", "Adventure", "Animation", "Children's",
-            "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film-Noir",
-            "Horror", "Musical", "Mystery", "Romance", "Sci-Fi", "Thriller",
-            "War", "Western"
-        ],
-        encoding="latin-1"
-    )[["movieId", "title"]]
-    
-    movies["search_title"] = movies["title"].str.lower().str.replace(r'[^\w\s]', '', regex=True)
-    return movies
-
-movies_df = load_movies()
+print("🔄 Loading combined movies dataset (English + Hindi)...")
+movies_df = load_combined_movies()  # REPLACED: Uses combined data
 
 # -----------------------------
-# Movie matching function
+# Movie matching function (UNCHANGED)
 # -----------------------------
 def find_movie_id(movie_title, threshold=0.6):
     clean_input = re.sub(r'[^\w\s]', '', movie_title.lower().strip())
@@ -91,11 +77,8 @@ class MovieRecommendationBot:
         self.model = mlflow.sklearn.load_model(self.model_uri)
         
     def load_data(self):
-        ratings = pd.read_csv(
-            "ml-100k/u.data",
-            sep="\t",
-            names=["userId","movieId","rating","timestamp"]
-        ).drop(columns=["timestamp"])
+        from utils import create_hybrid_ratings
+        ratings = create_hybrid_ratings()
         
         self.user_item_matrix = ratings.pivot(
             index='userId', columns='movieId', values='rating'
@@ -151,7 +134,7 @@ class MovieRecommendationBot:
 🤖 <strong>Movie Recommendation Bot Commands:</strong>
 
 🎬 <strong>Add Ratings:</strong>
-   - <code>Movie Name:Rating</code> (e.g., <code>Toy Story:5</code>, <code>The Godfather:4</code>)
+   - <code>Movie Name:Rating</code> (e.g., <code>Toy Story:5</code>, <code>3 Idiots:4</code>)
 
 📋 <strong>View & Manage:</strong>
    - <code>ratings</code> - Show your current ratings
@@ -309,7 +292,7 @@ class MovieRecommendationBot:
 bot = MovieRecommendationBot()
 
 # -----------------------------
-# Flask Routes
+# Flask Routes (UNCHANGED)
 # -----------------------------
 @app.route('/')
 def index():
@@ -443,14 +426,14 @@ def index():
                 <div class="chat-messages" id="chatMessages">
                     <div class="message bot-message">
                         <div class="message-content">
-                            <strong>🤖 MovieBot:</strong> Welcome! Rate movies using "Movie:Rating" format (e.g., "Toy Story:5"). 
+                            <strong>🤖 MovieBot:</strong> Welcome! Rate movies using "Movie:Rating" format (e.g., "Toy Story:5", "3 Idiots:4"). 
                             Type 'help' for commands or 'recommend' when ready!
                         </div>
                     </div>
                 </div>
 
                 <div class="input-container">
-                    <input type="text" id="messageInput" placeholder="Type your message... (e.g., The Godfather:5)" autocomplete="off">
+                    <input type="text" id="messageInput" placeholder="Type your message... (e.g., The Godfather:5 or 3 Idiots:4)" autocomplete="off">
                     <button id="sendButton">Send</button>
                 </div>
 
@@ -590,11 +573,6 @@ def search_movies():
     
     return jsonify(results)
 
-# Remove or comment out this existing block:
-# if __name__ == '__main__':
-#     app.run(debug=True, host='0.0.0.0', port=5000)
-
-# Add this instead:
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

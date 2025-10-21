@@ -1,42 +1,31 @@
+# src/train.py
 import pandas as pd
 import mlflow
 import mlflow.sklearn
 from sklearn.neighbors import NearestNeighbors
 from scipy.sparse import csr_matrix
 
+from utils import create_hybrid_ratings
+
 # -----------------------------
 # MLflow setup
 # -----------------------------
 mlflow.set_tracking_uri("file:./mlflow/mlruns")
-mlflow.set_experiment("movie-recommender")
+mlflow.set_experiment("hybrid-movie-recommender")  # Updated experiment name
 
 # -----------------------------
-# Load MovieLens 100K dataset
+# Load HYBRID dataset (ENGLISH + HINDI)
 # -----------------------------
-ratings = pd.read_csv(
-    "ml-100k/u.data",
-    sep="\t",
-    names=["userId", "movieId", "rating", "timestamp"]
-).drop(columns=["timestamp"])
-
-movies = pd.read_csv(
-    "ml-100k/u.item",
-    sep="|",
-    names=[
-        "movieId", "title", "release_date", "video_release_date", "IMDb_URL",
-        "unknown", "Action", "Adventure", "Animation", "Children's",
-        "Comedy", "Crime", "Documentary", "Drama", "Fantasy", "Film-Noir",
-        "Horror", "Musical", "Mystery", "Romance", "Sci-Fi", "Thriller",
-        "War", "Western"
-    ],
-    encoding="latin-1"
-)[["movieId", "title"]]
+print("🔄 Loading hybrid dataset (English + Hindi movies)...")
+ratings = create_hybrid_ratings()  # CHANGED: Uses combined data
 
 # -----------------------------
 # Create user-item matrix
 # -----------------------------
 user_item_matrix = ratings.pivot(index='userId', columns='movieId', values='rating').fillna(0)
 sparse_matrix = csr_matrix(user_item_matrix.values)
+
+print(f"📊 Training matrix: {user_item_matrix.shape[0]} users × {user_item_matrix.shape[1]} movies")
 
 # -----------------------------
 # Train KNN collaborative filtering model
@@ -48,11 +37,16 @@ model.fit(sparse_matrix)
 # Log model to MLflow
 # -----------------------------
 with mlflow.start_run() as run:
-    # Log without input_example to avoid warnings
     mlflow.sklearn.log_model(
         sk_model=model,
         artifact_path="model"
     )
     
-    print("Training complete ✅ | Model logged")
+    # Log some metrics
+    mlflow.log_param("total_users", user_item_matrix.shape[0])
+    mlflow.log_param("total_movies", user_item_matrix.shape[1])
+    mlflow.log_param("dataset", "hybrid_english_hindi")
+    
+    print("✅ Hybrid training complete! English + Hindi movies")
     print(f"Run ID: {run.info.run_id}")
+    print(f"Model can recommend from {user_item_matrix.shape[1]} movies")
