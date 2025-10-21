@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation MLOps Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .badges {
+            margin: 20px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .features li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .tech-item {
+            background: #ecf0f1;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            color: #2c3e50;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #e74c3c;
+        }
+
+        .btn-secondary:hover {
+            background: #c0392b;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .local-demo {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 200px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Movie Recommendation MLOps</h1>
+            <p class="subtitle">A machine learning pipeline for personalized movie recommendations</p>
+            
+            <div class="badges">
+                <span class="badge">Python</span>
+                <span class="badge">MLflow</span>
+                <span class="badge">Scikit-learn</span>
+                <span class="badge">Flask</span>
+                <span class="badge">Collaborative Filtering</span>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="https://github.com/YOUR_USERNAME/YOUR_REPO_NAME" class="btn" target="_blank">
+                    📁 View Code
+                </a>
+                <a href="https://github.com/ahamed338/movie-recommender-mlops#readme" class="btn btn-secondary" target="_blank">
+                    📚 Documentation
+                </a>
+            </div>
+        </header>
+
+        <div class="card-grid">
+            <div class="card">
+                <h2>🤖 Project Overview</h2>
+                <p>An end-to-end MLOps system that provides personalized movie recommendations using collaborative filtering and K-Nearest Neighbors algorithm.</p>
+                <ul class="features">
+                    <li>Train recommendation models with MLflow tracking</li>
+                    <li>Interactive prediction interface</li>
+                    <li>Web-based chatbot interface</li>
+                    <li>Model versioning and experiment tracking</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>⚙️ How It Works</h2>
+                <ul class="features">
+                    <li><strong>Data:</strong> MovieLens 100K dataset</li>
+                    <li><strong>Algorithm:</strong> KNN Collaborative Filtering</li>
+                    <li><strong>Training:</strong> MLflow experiment tracking</li>
+                    <li><strong>Serving:</strong> Flask web interface</li>
+                    <li><strong>Deployment:</strong> GitHub Pages + Local hosting</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2>🛠️ Tech Stack</h2>
+                <div class="tech-stack">
+                    <span class="tech-item">Python 3.8+</span>
+                    <span class="tech-item">Pandas</span>
+                    <span class="tech-item">Scikit-learn</span>
+                    <span class="tech-item">MLflow</span>
+                    <span class="tech-item">Flask</span>
+                    <span class="tech-item">HTML/CSS/JS</span>
+                    <span class="tech-item">GitHub Pages</span>
+                </div>
+                
+                <h3 style="margin-top: 20px;">📁 Project Structure</h3>
+                <div class="code-block">
+src/
+├── train.py          # Model training
+├── predict.py        # CLI predictions
+├── web_app.py        # Flask web interface
+└── chatbot.py        # Chatbot logic
+docs/
+└── index.html        # This documentation site
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🎯 Try It Out Locally</h2>
+            <p>Run the movie recommendation system on your local machine!</p>
+            
+            <div class="local-demo">
+                <h3>🚀 Quick Start</h3>
+                <div class="code-block">
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+cd YOUR_REPO_NAME
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the web application
+python src/web_app.py
+                </div>
+                <p>Then open <strong>http://localhost:5000</strong> in your browser to access the chatbot interface!</p>
+            </div>
+
+            <div class="local-demo">
+                <h3>🎬 Demo Features</h3>
+                <ul class="features">
+                    <li>Interactive movie rating system</li>
+                    <li>Personalized recommendations</li>
+                    <li>Chatbot-style interface</li>
+                    <li>Real-time predictions</li>
+                    <li>MLflow model tracking</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card-grid">
+            <div class="card">
+                <h2>📚 Usage Examples</h2>
+                <h3>Training the Model</h3>
+                <div class="code-block">
+# Train the recommendation model
+python src/train.py
+                </div>
+
+                <h3>CLI Predictions</h3>
+                <div class="code-block">
+# Get recommendations via command line
+python src/predict.py
+                </div>
+
+                <h3>Web Interface</h3>
+                <div class="code-block">
+# Launch the web application
+python src/web_app.py
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📊 MLflow Tracking</h2>
+                <p>Monitor experiments and model performance locally:</p>
+                <div class="code-block">
+# View MLflow UI
+mlflow ui --backend-store-uri file:./mlflow/mlruns
+
+# Open: http://localhost:5000
+                </div>
+                
+                <p><strong>Tracked Metrics:</strong></p>
+                <ul class="features">
+                    <li>Model parameters and configurations</li>
+                    <li>Training artifacts and metrics</li>
+                    <li>Experiment comparisons</li>
+                    <li>Model version history</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🔧 Development</h2>
+            <div class="local-demo">
+                <h3>Project Setup</h3>
+                <div class="code-block">
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Download MovieLens dataset (if not included)
+# Place in ml-100k/ folder
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made with ❤️ for the MLOps community</p>
+        <p>
+            <a href="https://github.com/YOUR_USERNAME/YOUR_REPO_NAME" style="color: white; text-decoration: underline;" target="_blank">
+                View on GitHub
+            </a>
+        </p>
+    </footer>
+</body>
+</html>
