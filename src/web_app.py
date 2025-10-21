@@ -30,20 +30,38 @@ movies_df = load_combined_movies()  # REPLACED: Uses combined data
 def find_movie_id(movie_title, threshold=0.6):
     clean_input = re.sub(r'[^\w\s]', '', movie_title.lower().strip())
     
-    exact_match = movies_df[movies_df["search_title"] == clean_input]
+    print(f"🔍 Searching for: '{movie_title}' -> '{clean_input}'")
+    
+    # First try: Remove year and search
+    title_without_year = re.sub(r'\s*\(\d{4}\)', '', clean_input).strip()
+    
+    # Try exact match without year
+    exact_match = movies_df[movies_df["search_title"].str.replace(r'\s*\(\d{4}\)', '', regex=True) == title_without_year]
     if not exact_match.empty:
+        print(f"✅ Match without year: {exact_match.iloc[0]['title']}")
         return exact_match.iloc[0]["movieId"], exact_match.iloc[0]["title"]
     
-    partial_matches = movies_df[movies_df["search_title"].str.contains(clean_input, na=False)]
+    # Try partial match without year
+    partial_matches = movies_df[movies_df["search_title"].str.replace(r'\s*\(\d{4}\)', '', regex=True).str.contains(title_without_year, na=False)]
     if not partial_matches.empty:
+        print(f"✅ Partial match: {partial_matches.iloc[0]['title']}")
         return partial_matches.iloc[0]["movieId"], partial_matches.iloc[0]["title"]
     
+    # Try original matching (with year)
+    exact_match_with_year = movies_df[movies_df["search_title"] == clean_input]
+    if not exact_match_with_year.empty:
+        print(f"✅ Exact match with year: {exact_match_with_year.iloc[0]['title']}")
+        return exact_match_with_year.iloc[0]["movieId"], exact_match_with_year.iloc[0]["title"]
+    
+    # Try fuzzy matching
     all_titles = movies_df["search_title"].tolist()
     matches = get_close_matches(clean_input, all_titles, n=1, cutoff=threshold)
     if matches:
         matched_row = movies_df[movies_df["search_title"] == matches[0]].iloc[0]
+        print(f"✅ Fuzzy match: {matched_row['title']}")
         return matched_row["movieId"], matched_row["title"]
     
+    print(f"❌ No match found for: '{movie_title}'")
     return None, None
 
 # -----------------------------
