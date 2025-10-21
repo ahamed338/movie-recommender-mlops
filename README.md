@@ -17,3 +17,7 @@ deploys it as a FastAPI service, and automates CI/CD pipelines using GitHub Acti
 3. Run `python src/train.py` to train the model.
 4. Run `python src/predict.py` to start the API.
 5. Use the `/recommend` endpoint to get movie recommendations.
+
+   
+https://ahamed338.github.io/movie-recommender-mlops/
+https://movie-recommender-mlops-tkyl.onrender.com
